@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-cpp';
-import 'prismjs/components/prism-bash';
-import 'prismjs/themes/prism-tomorrow.css';
-import { Github, ExternalLink, Code2 } from 'lucide-react';
+import React, { useMemo } from 'react';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark.css';
+import { Github, ExternalLink } from 'lucide-react';
 import { Project } from '../types';
 import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
@@ -14,9 +11,21 @@ export interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
-  useEffect(() => {
-    Prism.highlightAll();
-  }, [project.id]);
+  const highlightedCode = useMemo(() => {
+    if (!project.codeSnippet) return '';
+    const lang = project.codeSnippet.language;
+    
+    try {
+      return hljs.highlight(project.codeSnippet.code, { language: lang }).value;
+    } catch (e) {
+      try {
+        return hljs.highlightAuto(project.codeSnippet.code).value;
+      } catch (err) {
+        console.error('Highlight.js failed:', err);
+        return project.codeSnippet.code;
+      }
+    }
+  }, [project.codeSnippet]);
 
   return (
     <motion.div
@@ -63,8 +72,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             <div className="w-1.5 h-1.5 rounded-full bg-green-500/40" />
             <span className="text-[9px] font-mono text-white/20 ml-2 uppercase">snippet.{project.codeSnippet.language}</span>
           </div>
-          <pre className={cn(`language-${project.codeSnippet.language}`, "m-0 !p-3 !bg-transparent")}>
-            <code>{project.codeSnippet.code}</code>
+          <pre className={cn(`language-${project.codeSnippet.language}`, "m-0 !p-3 !bg-transparent overflow-hidden")}>
+            <code 
+              className="hljs !bg-transparent !p-0"
+              dangerouslySetInnerHTML={{ __html: highlightedCode }} 
+            />
           </pre>
         </div>
       )}

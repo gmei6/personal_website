@@ -59,7 +59,7 @@
   }
 }
 
-.prism-code {
+.code-block {
   @apply rounded-lg p-4 bg-black/40 border border-white/5 !font-mono !text-[11px];
 }
 

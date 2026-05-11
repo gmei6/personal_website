@@ -1,3 +1,7 @@
+# DevPortfolio Framework
+
+A professional, minimalist portfolio framework designed specifically for Python and C++ developers. This project uses React, Tailwind CSS, and Motion to provide a high-performance, modular experience.
+
 ## 🚀 Quick Start (Local Setup)
 
 1. **Install Dependencies**
@@ -61,3 +65,4 @@ This project is optimized for deployment via GitHub Actions.
 - **Dark Mode**: Automatically toggles based on system preference or user manual toggle.
 
 ---
+*Built with simplicity and performance in mind. No AI was used in the functionality of this template.*
